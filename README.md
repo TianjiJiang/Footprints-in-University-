@@ -1,2 +1,2 @@
 # Footprints-in-University-
-There're some project finished during my university.
+There're some projects finished during my university.
