@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>admin_ch_sinfo</class>
+ <widget class="QMainWindow" name="admin_ch_sinfo">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>755</width>
+    <height>476</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>职工信息管理</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>751</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,2,1,1,1,1,1">
+     <property name="leftMargin">
+      <number>18</number>
+     </property>
+     <property name="topMargin">
+      <number>12</number>
+     </property>
+     <property name="rightMargin">
+      <number>13</number>
+     </property>
+     <property name="bottomMargin">
+      <number>6</number>
+     </property>
+     <property name="horizontalSpacing">
+      <number>31</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>27</number>
+     </property>
+     <item row="1" column="3" colspan="2">
+      <widget class="QPushButton" name="del_B">
+       <property name="text">
+        <string>删除</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="Sno_LE"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>职工号</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>职工姓名</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>出生日期</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="Sno_S_LE"/>
+     </item>
+     <item row="0" column="3" colspan="2">
+      <widget class="QLineEdit" name="Sname_LE"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>性别</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>职工姓名</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="5" colspan="2">
+      <widget class="QPushButton" name="Add_Ch_B">
+       <property name="text">
+        <string>添加</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>职工号</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QComboBox" name="Ssex_CB">
+       <item>
+        <property name="text">
+         <string>男</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>女</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="2">
+      <widget class="QDateEdit" name="birthday">
+       <property name="dateTime">
+        <datetime>
+         <hour>0</hour>
+         <minute>0</minute>
+         <second>0</second>
+         <year>1990</year>
+         <month>1</month>
+         <day>1</day>
+        </datetime>
+       </property>
+       <property name="time">
+        <time>
+         <hour>0</hour>
+         <minute>0</minute>
+         <second>0</second>
+        </time>
+       </property>
+       <property name="currentSection">
+        <enum>QDateTimeEdit::YearSection</enum>
+       </property>
+       <property name="displayFormat">
+        <string>yyyy-MM-dd</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3" colspan="2">
+      <widget class="QLineEdit" name="Sname_S_LE"/>
+     </item>
+     <item row="4" column="0" colspan="7">
+      <widget class="QTableWidget" name="info_TB">
+       <property name="gridStyle">
+        <enum>Qt::SolidLine</enum>
+       </property>
+       <property name="rowCount">
+        <number>7</number>
+       </property>
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>58</number>
+       </attribute>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>170</number>
+       </attribute>
+       <attribute name="verticalHeaderMinimumSectionSize">
+        <number>20</number>
+       </attribute>
+       <attribute name="verticalHeaderDefaultSectionSize">
+        <number>35</number>
+       </attribute>
+       <row/>
+       <row/>
+       <row/>
+       <row/>
+       <row/>
+       <row/>
+       <row/>
+       <column>
+        <property name="text">
+         <string>职工号</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>姓名</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>性别</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>出生日期</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item row="3" column="5" colspan="2">
+      <widget class="QPushButton" name="Search_B">
+       <property name="text">
+        <string>查询</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" colspan="7">
+      <widget class="Line" name="line">
+       <property name="midLineWidth">
+        <number>4</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>755</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>模式</string>
+    </property>
+    <addaction name="Sinfo_A"/>
+    <addaction name="Rinfo_A"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <action name="Sinfo_A">
+   <property name="text">
+    <string>职工信息管理</string>
+   </property>
+  </action>
+  <action name="Rinfo_A">
+   <property name="text">
+    <string>职工签到统计</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

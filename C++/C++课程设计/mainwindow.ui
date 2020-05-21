@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>542</width>
+    <height>349</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>员工考勤系统</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>541</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <pointsize>19</pointsize>
+        </font>
+       </property>
+       <property name="locale">
+        <locale language="Chinese" country="China"/>
+       </property>
+       <property name="lineWidth">
+        <number>3</number>
+       </property>
+       <property name="text">
+        <string>高高兴兴上班,平平安安回家!</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>110</y>
+      <width>541</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout" rowstretch="1,3" columnstretch="1,3,1,3" rowminimumheight="0,0">
+     <property name="leftMargin">
+      <number>28</number>
+     </property>
+     <property name="topMargin">
+      <number>3</number>
+     </property>
+     <property name="rightMargin">
+      <number>28</number>
+     </property>
+     <property name="bottomMargin">
+      <number>1</number>
+     </property>
+     <property name="horizontalSpacing">
+      <number>29</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>34</number>
+     </property>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="Sname_LE"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>职工姓名</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>职工号</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="Sno_LE"/>
+     </item>
+     <item row="1" column="2" colspan="2">
+      <widget class="QPushButton" name="reg_B">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>签到</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QPushButton" name="for_rest_B">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>请假</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+    <zorder>label_2</zorder>
+    <zorder>Sno_LE</zorder>
+    <zorder>label_4</zorder>
+    <zorder>Sname_LE</zorder>
+    <zorder>for_rest_B</zorder>
+    <zorder>reg_B</zorder>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>-1</x>
+      <y>289</y>
+      <width>541</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0">
+     <property name="leftMargin">
+      <number>392</number>
+     </property>
+     <property name="rightMargin">
+      <number>49</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="adminlog">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>管理员登录</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>-1</x>
+      <y>50</y>
+      <width>541</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLCDNumber" name="TIme_show">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="digitCount">
+        <number>8</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

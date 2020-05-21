@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>admin_ch_rinfo</class>
+ <widget class="QMainWindow" name="admin_ch_rinfo">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>674</width>
+    <height>570</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>签到信息查询</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>671</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout" rowstretch="1,0,0,0,0,0" columnstretch="1,0,0,0,0">
+     <property name="leftMargin">
+      <number>6</number>
+     </property>
+     <property name="topMargin">
+      <number>4</number>
+     </property>
+     <property name="rightMargin">
+      <number>6</number>
+     </property>
+     <property name="bottomMargin">
+      <number>1</number>
+     </property>
+     <property name="horizontalSpacing">
+      <number>32</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>21</number>
+     </property>
+     <item row="2" column="2" colspan="2">
+      <widget class="QLabel" name="info_LB3">
+       <property name="text">
+        <string>info3</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="all_search_B">
+       <property name="text">
+        <string>总体信息</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="4">
+      <widget class="QPushButton" name="s_search_B">
+       <property name="text">
+        <string>个人查询</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="4">
+      <widget class="QPushButton" name="del_re_B">
+       <property name="text">
+        <string>记录删除</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" colspan="5">
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="nor_T">
+        <attribute name="title">
+         <string>正常</string>
+        </attribute>
+        <widget class="QWidget" name="verticalLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>-1</x>
+           <y>-1</y>
+           <width>661</width>
+           <height>281</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QTableWidget" name="nor_TB">
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>218</number>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>职工号</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>姓名</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>日期时间</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="laear_T">
+        <attribute name="title">
+         <string>迟到早退</string>
+        </attribute>
+        <widget class="QWidget" name="verticalLayoutWidget_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>661</width>
+           <height>281</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QTableWidget" name="la_or_ear_TB">
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>218</number>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>职工号</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>姓名</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>日期时间</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="rest_T">
+        <attribute name="title">
+         <string>请假</string>
+        </attribute>
+        <widget class="QWidget" name="verticalLayoutWidget_3">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>661</width>
+           <height>281</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QTableWidget" name="rest_TB">
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>218</number>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>职工号</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>姓名</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>日期时间</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="over_T">
+        <attribute name="title">
+         <string>加班</string>
+        </attribute>
+        <widget class="QWidget" name="verticalLayoutWidget_5">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>661</width>
+           <height>281</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QTableWidget" name="over_TB">
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>218</number>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>职工号</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>姓名</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>日期时间</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="del_T">
+        <attribute name="title">
+         <string>已删除记录</string>
+        </attribute>
+        <widget class="QWidget" name="verticalLayoutWidget_4">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>661</width>
+           <height>281</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QTableWidget" name="del_TB">
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>163</number>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>职工号</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>姓名</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>日期时间</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>删除日期</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+     </item>
+     <item row="3" column="2" colspan="2">
+      <widget class="QLabel" name="info_LB4">
+       <property name="text">
+        <string>info4</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2" colspan="2">
+      <widget class="QLabel" name="info_LB1">
+       <property name="text">
+        <string>info1</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2" colspan="2">
+      <widget class="QLabel" name="info_LB2">
+       <property name="text">
+        <string>info2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="Sno_LE"/>
+     </item>
+     <item row="4" column="3">
+      <widget class="QLineEdit" name="Sname_LE"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>职工号</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>职工姓名</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>674</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>模式</string>
+    </property>
+    <addaction name="Sinfo_A"/>
+    <addaction name="action_2"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <action name="Sinfo_A">
+   <property name="text">
+    <string>职工信息管理</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>职工签到管理</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
