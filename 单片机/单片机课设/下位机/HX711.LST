@@ -1,0 +1,74 @@
+C51 COMPILER V9.01   HX711                                                                 12/20/2019 15:03:54 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE HX711
+OBJECT MODULE PLACED IN HX711.OBJ
+COMPILER INVOKED BY: S:\Keil4\C51\C51\BIN\C51.EXE HX711.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "HX711.h"
+   2          
+   3          long Weight_self = 0;
+   4          long Weight_food = 0;
+   5          
+   6          unsigned long ReadCount(void)
+   7          {
+   8   1              unsigned long Count;
+   9   1              unsigned char i;
+  10   1              HX711_SCK=0; // 使能 AD （ PD_SCK  置低）
+  11   1              Count=0;
+  12   1              while(HX711_DOUT); //AD 转换未结束则等待，否则开始读取
+  13   1              for (i=0;i<24;i++)
+  14   1              {
+  15   2                      HX711_SCK=1; //PD_SCK  置高（发送脉冲）
+  16   2                      Count=Count<<1; // 下降沿来时变量 Count 左移一位，右侧补零
+  17   2                      HX711_SCK=0; //PD_SCK  置低
+  18   2                      if(HX711_DOUT) Count++;
+  19   2              }
+  20   1              HX711_SCK=1;
+  21   1              Count=Count^0x800000;// 第 25 个脉冲下降沿来时，转换数据
+  22   1              HX711_SCK=0;
+  23   1              return(Count);
+  24   1      }
+  25          
+  26          void GetWeight()
+  27          {
+  28   1              Weight_food= ReadCount();
+  29   1              Weight_food = Weight_food-Weight_self;
+  30   1              if(Weight_food < 0) 
+  31   1              {
+  32   2                      Weight_food = 0;
+  33   2      //              Weight_flag = 2;
+  34   2                      return;
+  35   2              }
+  36   1              Weight_food = (unsigned int)((float)Weight_food/9);      //349
+  37   1      //      if(Weight_food > 5000) 
+  38   1      //              {
+  39   1                              //Weight_flag = 1;
+  40   1                              return;
+  41   1      //              }
+  42   1      //      else
+  43   1              //      Weight_flag = 0;
+  44   1      
+  45   1      }
+  46          void WeightInit()
+  47          {
+  48   1              Weight_self = ReadCount();
+  49   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    146    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V9.01   HX711                                                                 12/20/2019 15:03:54 PAGE 2   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

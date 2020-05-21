@@ -1,0 +1,65 @@
+C51 COMPILER V9.01   KEY                                                                   12/19/2019 07:30:33 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE KEY
+OBJECT MODULE PLACED IN key.OBJ
+COMPILER INVOKED BY: S:\Keil4\C51\C51\BIN\C51.EXE key.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "Key.h"
+   2          
+   3          u8 KeyValue = 0;        //用来存放读取到的键值
+   4          
+   5          void delayself(u16 i)
+   6          {
+   7   1              while(i--);     
+   8   1      }
+   9          void KeyDown(void)
+  10          {
+  11   1              GPIO_KEY=0xFF;
+  12   1              GPIO_KEY=0x0F;
+  13   1              if(GPIO_KEY!=0x0f)//读取按键是否按下
+  14   1              {
+  15   2                      delayself(1000);//延时10ms进行消抖
+  16   2                      if(GPIO_KEY!=0x0f)//再次检测键盘是否按下
+  17   2                      {       
+  18   3                              //测试列
+  19   3                              GPIO_KEY=0X0F;
+  20   3                              switch(GPIO_KEY)
+  21   3                              {
+  22   4                                      case(0X07):     KeyValue=1;break;
+  23   4                                      case(0X0b):     KeyValue=2;break;
+  24   4                                      case(0X0d): KeyValue=3;break;
+  25   4                                      case(0X0e):     KeyValue=4;break;
+  26   4                              }
+  27   3                              //测试行
+  28   3                              GPIO_KEY=0XF0;
+  29   3                              switch(GPIO_KEY)
+  30   3                              {
+  31   4                                      case(0X70):     KeyValue=KeyValue;break;
+  32   4                                      case(0Xb0):     KeyValue=KeyValue+4;break;
+  33   4                                      case(0Xd0): KeyValue=KeyValue+8;break;
+  34   4                                      case(0Xe0):     KeyValue=KeyValue+12;break;
+  35   4                              }
+  36   3                              while(GPIO_KEY!=0xf0);
+  37   3      
+  38   3                              
+  39   3                                               //检测按键松手检测
+  40   3                      }
+  41   2              }
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    122    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

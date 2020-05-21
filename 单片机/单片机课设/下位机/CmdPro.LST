@@ -1,0 +1,129 @@
+C51 COMPILER V9.01   CMDPRO                                                                12/20/2019 15:03:55 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE CMDPRO
+OBJECT MODULE PLACED IN CmdPro.OBJ
+COMPILER INVOKED BY: S:\Keil4\C51\C51\BIN\C51.EXE CmdPro.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "CmdPro.h"
+   2          /*
+   3          
+   4          Commend Format
+   5          Head:
+   6                  {
+   7                          T: time
+   8                          F: feed information
+   9                          W: weight infomation(Read Only)
+  10                          M: manual feed
+  11                  }
+  12          Middle: 
+  13                  {
+  14                          S: SET
+  15                          R: Read
+  16                  }
+  17          Info:
+  18                  {
+  19                          Time: 
+  20                                  [second,min,hour,day,month,week,year]
+  21                          Feed_info：
+  22                                  [addr,time,weight]
+  23                  }
+  24          */
+  25          void CmdPro()
+  26          {
+  27   1              uchar i;
+  28   1              wait_serial_cmd();
+  29   1              if(New_Cmd)
+  30   1              {
+  31   2                      New_Cmd = 0;
+  32   2      //              serial_print(RcvData);
+  33   2      //              serial_print("R\n");
+  34   2                      switch(RcvData[0])
+  35   2                      {
+  36   3                              case 'T':
+  37   3                              {
+  38   4                                      if(RcvData[1] == 'S')
+  39   4                                      {
+  40   5                                              for(i = 0; i < 7; i++)
+  41   5                                              {
+  42   6                                                      SET_TIME[i] = RcvData[i+2];
+  43   6                                              }
+  44   5                                              Ds1302Init();
+  45   5                                      }
+  46   4                                      else if(RcvData[1] == 'R')
+  47   4                                      {
+  48   5                                              serial_printu8(RTIME,7);
+  49   5                                              serial_print("\n");
+  50   5                                      }
+  51   4                                      break;
+  52   4                              }
+  53   3                              case 'F':
+  54   3                              {
+  55   4                                      if(RcvData[1] == 'S')
+C51 COMPILER V9.01   CMDPRO                                                                12/20/2019 15:03:55 PAGE 2   
+
+  56   4                                      {
+  57   5                                              At24c02Write(RcvData[2]*2+1,RcvData[4]);
+  58   5                                              for(i = 0; i<200;i++);
+  59   5                                              for(i = 0; i<200;i++);
+  60   5                                              At24c02Write(RcvData[2]*2,RcvData[3]);
+  61   5                                              for(i = 0; i<200;i++);
+  62   5                                              for(i = 0; i<200;i++);
+  63   5                                              if (RcvData[3] == 0x25)
+  64   5                                                      ParamInit();
+  65   5                                      }
+  66   4                                      else if(RcvData[1] == 'R')
+  67   4                                      {
+  68   5                                              serial_print("FT");
+  69   5                                              serial_printu8(feed_time,feed_times);
+  70   5                                              serial_print("\n");
+  71   5                                              serial_print("FW");
+  72   5                                              serial_printu8(feed_weigth,feed_times);
+  73   5                                              serial_print("\n");
+  74   5                                      }
+  75   4                                      break;
+  76   4                              }
+  77   3                              case 'W':
+  78   3                              {
+  79   4      
+  80   4                                      if(RcvData[1] == 'R')
+  81   4                                      {
+  82   5      #ifdef hx711
+                                                      serial_print(num16tochar(Weight_food));
+                                                      serial_print("g\n");
+              #else
+  86   5                                              serial_print("NO HX711");
+  87   5      #endif
+  88   5                                      }
+  89   4                                      break;
+  90   4                              }
+  91   3                              case 'M':
+  92   3                              {
+  93   4                                      feed();
+  94   4                              }
+  95   3                              break;
+  96   3                              case 'S':
+  97   3                              {
+  98   4                                      serial_print(num16tochar(S));
+  99   4                                      serial_print("cm\n");
+ 100   4                              }break;
+ 101   3                      }
+ 102   2      //              serial_print("ACK CMD\n");
+ 103   2              }
+ 104   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    274    ----
+   CONSTANT SIZE    =     21    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

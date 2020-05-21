@@ -1,0 +1,80 @@
+C51 COMPILER V9.01   ULTRASONIC                                                            12/20/2019 15:03:53 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE ULTRASONIC
+OBJECT MODULE PLACED IN ultrasonic.OBJ
+COMPILER INVOKED BY: S:\Keil4\C51\C51\BIN\C51.EXE ultrasonic.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          #include "ultrasonic.h"
+   3          
+   4                                    
+   5          unsigned int  time=0;
+   6          unsigned long S=0;
+   7          
+   8          void Count(void)
+   9          {
+  10   1               time=TH0*256+TL0;
+  11   1               TH0=0;
+  12   1               TL0=0;
+  13   1               S=(time*17.4)/100;     //算出来是CM
+  14   1      }
+  15          void  StartModule()                      //启动模块
+  16          {
+  17   1                Trig=1;                                            //启动一次模块
+  18   1                _nop_(); 
+  19   1                _nop_(); 
+  20   1                _nop_(); 
+  21   1                _nop_(); 
+  22   1                _nop_(); 
+  23   1                _nop_(); 
+  24   1                _nop_(); 
+  25   1                _nop_(); 
+  26   1                _nop_(); 
+  27   1                _nop_(); 
+  28   1                _nop_(); 
+  29   1                _nop_(); 
+  30   1                _nop_(); 
+  31   1                _nop_(); 
+  32   1                _nop_(); 
+  33   1                _nop_(); 
+  34   1                _nop_();
+  35   1                _nop_(); 
+  36   1                _nop_(); 
+  37   1                _nop_(); 
+  38   1                _nop_();
+  39   1                Trig=0;
+  40   1      }
+  41          
+  42          void measure(void)
+  43          {
+  44   1      
+  45   1               TMOD|=0x01;               //设T0为方式1，GATE=1；
+  46   1               TH0=0;
+  47   1               TL0=0;
+  48   1               EA=1;
+  49   1               StartModule();
+  50   1           while(!Echo);                       //当RX为零时等待
+  51   1           TR0=1;                         //开启计数
+  52   1           while(Echo);                       //当RX为1计数并等待
+  53   1           TR0=0;                             //关闭计数
+  54   1           Count();                   //计算                
+  55   1      }
+C51 COMPILER V9.01   ULTRASONIC                                                            12/20/2019 15:03:53 PAGE 2   
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    113    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

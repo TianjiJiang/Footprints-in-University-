@@ -1,0 +1,13 @@
+"STARTUP.obj",
+"main.obj",
+"serial.obj",
+"feed_motor.obj",
+"lcd.obj",
+"ultrasonic.obj",
+"mem.obj",
+"RTC.obj",
+"common.obj",
+"HX711.obj",
+"CmdPro.obj" 
+TO "NO1_module_test" 
+RAMSIZE(256) 

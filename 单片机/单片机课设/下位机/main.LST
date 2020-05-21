@@ -1,0 +1,376 @@
+C51 COMPILER V9.01   MAIN                                                                  12/20/2019 15:03:52 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: S:\Keil4\C51\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          #include "main.h"
+   3          
+   4          uchar feed_time[10] = {0};
+   5          uchar feed_weigth[10] = {0};
+   6          uchar feed_times = 0;
+   7          uchar now_feed_time = 1; // to mark which weight standerd usings
+   8          bit isSendFull = 1;
+   9          
+  10          bit isauto = 0; //0 is auto;1 is manual 
+  11          uchar key = 0;
+  12          
+  13          
+  14          void VeryLongTimeDelay()
+  15          {
+  16   1              uint iii,jjj;
+  17   1              for(iii = 0;iii <6000 ;iii++)
+  18   1                      for(jjj = 0; jjj <20;jjj++);
+  19   1      }
+  20          void TimeDelay()
+  21          {
+  22   1              uint iii;
+  23   1              for(iii = 0;iii <200 ;iii++);
+  24   1      }
+  25          #ifndef hx711
+  26          void feed_delay(char i)
+  27          {
+  28   1              u16 a;
+  29   1              while(i--)
+  30   1              {
+  31   2                      a = 60000;
+  32   2                      while(a--);
+  33   2              }
+  34   1      }
+  35          #endif
+  36          
+  37          void ParamInit() // basic param init
+  38          {
+  39   1              /* 
+  40   1              ==addr==        ==data==
+  41   1                      0               time1
+  42   1                      1               weight1
+  43   1                      2               time2
+  44   1                      3               weight2
+  45   1                      4               time3
+  46   1                      4               weight3
+  47   1                      *               *
+  48   1                      *               *
+  49   1                      *               *
+  50   1              end with 0x00
+  51   1              */
+  52   1              uchar i;
+  53   1              uchar tmp;
+  54   1              for(i = 0;i<10;i++)
+  55   1              {
+C51 COMPILER V9.01   MAIN                                                                  12/20/2019 15:03:52 PAGE 2   
+
+  56   2                      tmp = At24c02Read(i*2);
+  57   2                      if (tmp == 0x25) break;
+  58   2                      feed_time[i] = tmp;
+  59   2                      feed_weigth[i] = At24c02Read(i*2+1);
+  60   2              }
+  61   1              feed_times = i;
+  62   1              LcdClearScreen();
+  63   1              LcdShowStr(1,0,"Param Init");
+  64   1              if(i == 1)
+  65   1                      LcdShowStr(4,1,"error!");
+  66   1              else
+  67   1                      LcdShowStr(4,1,"success!");
+  68   1                      VeryLongTimeDelay();
+  69   1                      LcdClearScreen();
+  70   1              now_feed_time = feed_time + 1;
+  71   1      }
+  72          
+  73          
+  74          void init()
+  75          {
+  76   1              P1 = 0x00;
+  77   1              UsartInit();
+  78   1              InitLcd1602();
+  79   1      #ifdef hx711
+                      WeightInit();
+              #endif
+  82   1              ParamInit();
+  83   1              
+  84   1      }
+  85          
+  86          
+  87          
+  88          uchar isenough()         //to test the food box wether food fed is enough
+  89          {
+  90   1      
+  91   1      #ifdef hx711
+                      int i = 5000;
+                      while(i--);
+                      GetWeight();
+              //      serial_print(num16tochar(Weight_food));
+              //      serial_print("g\n");
+                      if(Weight_food < (feed_weigth[now_feed_time] - CORRECTION) * 10) return 0;
+                      else return 1;
+              #else
+ 100   1               return 1;
+ 101   1      
+ 102   1      #endif
+ 103   1      
+ 104   1      }
+ 105          
+ 106          uchar isfeed() //to test  wether it's time to feed
+ 107          {
+ 108   1      
+ 109   1              char i;
+ 110   1              char ret = 0;
+ 111   1              Ds1302ReadTime();
+ 112   1              TimeDelay();
+ 113   1              for(i = 0; i< feed_times;i++)
+ 114   1              {
+ 115   2                      if (RTIME[2] == feed_time[i])
+ 116   2                      {
+ 117   3                              if (RTIME[2] == feed_time[now_feed_time]) 
+C51 COMPILER V9.01   MAIN                                                                  12/20/2019 15:03:52 PAGE 3   
+
+ 118   3                                      break;
+ 119   3                              else
+ 120   3                              {
+ 121   4                                      now_feed_time = i;
+ 122   4                                      ret = 1;
+ 123   4                              }
+ 124   3                      }
+ 125   2              }
+ 126   1              return ret;
+ 127   1      }
+ 128          
+ 129          uchar isempty() //to test the food box wether is empty
+ 130          {
+ 131   1              measure();
+ 132   1              TimeDelay();
+ 133   1              if (S > 1000)
+ 134   1              {
+ 135   2                      serial_print("Empty\n");
+ 136   2                      isSendFull = 1;
+ 137   2                      return 1;
+ 138   2              }
+ 139   1              else
+ 140   1              {
+ 141   2                      if(isSendFull)
+ 142   2                      {
+ 143   3                              serial_print("Not Empty\n");
+ 144   3                              isSendFull = 0;
+ 145   3                      }
+ 146   2                      return 0;
+ 147   2              }
+ 148   1      }
+ 149          
+ 150          void Keypro()
+ 151          {
+ 152   1              P1 = 0xf0;
+ 153   1              TimeDelay();
+ 154   1              key = P1 & 0xf0;
+ 155   1              if (key != 0xF0)
+ 156   1              {
+ 157   2                      TimeDelay();
+ 158   2                      P1 = 0xf0;
+ 159   2                      key = P1 & 0xf0;
+ 160   2                      if (key == 0xF0) key = 0;
+ 161   2              }
+ 162   1              if (key == 0x70)
+ 163   1              {
+ 164   2                      isauto = ~isauto;
+ 165   2                      key = 0;
+ 166   2              }
+ 167   1      }
+ 168          
+ 169          void isopened()  //to test wether box is opend
+ 170          {
+ 171   1              if(openPin == 0)
+ 172   1              {
+ 173   2                      serial_print("box opened\n");
+ 174   2                      LcdShowStr(0,0,"Box Opened");
+ 175   2                      VeryLongTimeDelay();
+ 176   2                      LcdClearScreen();
+ 177   2                      LcdShowStr(0,0,"Please close it");
+ 178   2                      while(!openPin);
+ 179   2                      LcdClearScreen();
+C51 COMPILER V9.01   MAIN                                                                  12/20/2019 15:03:52 PAGE 4   
+
+ 180   2                      LcdShowStr(0,0,"Box Closed");
+ 181   2                      serial_print("box closed\n");
+ 182   2                      isSendFull = 1;
+ 183   2                      VeryLongTimeDelay();
+ 184   2                      LcdClearScreen();
+ 185   2              }       
+ 186   1      }
+ 187          
+ 188          void feed()
+ 189          {
+ 190   1              EA = 0;
+ 191   1      #ifdef hx711
+                      if(isenough())
+                      {
+                              LcdClearScreen();
+                              LcdShowStr(0,0,"Food is enough!");
+                              VeryLongTimeDelay();
+                              serial_print("don't need to feed\n");
+                              LcdClearScreen();
+                      }
+                      else
+              #endif
+ 202   1              {
+ 203   2                      LcdClearScreen();
+ 204   2                      LcdShowStr(0,0,"Feeding..");
+ 205   2                      serial_print("feed start\n");
+ 206   2                      open();
+ 207   2      #ifdef hx711
+                              while(!isenough());
+              #else
+ 210   2                      feed_delay(feed_weigth[now_feed_time]);
+ 211   2      #endif
+ 212   2                      LcdClearScreen();
+ 213   2                      LcdShowStr(0,0,"Closeing..");
+ 214   2                      close();
+ 215   2                      LcdClearScreen();
+ 216   2                      LcdShowStr(0,0,"Closed");
+ 217   2                      VeryLongTimeDelay();
+ 218   2                      LcdClearScreen();
+ 219   2                      serial_print("Feed over\n");
+ 220   2                      isSendFull = 1;
+ 221   2              }
+ 222   1              EA = 0;
+ 223   1      }
+ 224          
+ 225          void ShowTime()
+ 226          {
+ 227   1              LcdShowStr(0,0,"20");
+ 228   1              DisplayOneChar(2,0,((RTIME[6] >> 4)&0x0f)|0x30);
+ 229   1              DisplayOneChar(3,0,(RTIME[6]&0x0f)|0x30);
+ 230   1              
+ 231   1              DisplayOneChar(4,0,'-');
+ 232   1              DisplayOneChar(5,0,((RTIME[4] >> 4)&0x0F)|0x30);
+ 233   1              DisplayOneChar(6,0,(RTIME[4]&0x0f)|0x30);
+ 234   1              
+ 235   1              DisplayOneChar(7,0,'-');
+ 236   1              DisplayOneChar(8,0,((RTIME[3] >> 4)&0x0F)|0x30);
+ 237   1              DisplayOneChar(9,0,(RTIME[3]&0x0f)|0x30);
+ 238   1              
+ 239   1      
+ 240   1              DisplayOneChar(6,1,((RTIME[2] >> 4)&0x0F)|0x30);
+ 241   1              DisplayOneChar(7,1,(RTIME[2]&0x0f)|0x30);
+C51 COMPILER V9.01   MAIN                                                                  12/20/2019 15:03:52 PAGE 5   
+
+ 242   1              
+ 243   1              DisplayOneChar(8,1,':');
+ 244   1              DisplayOneChar(9,1,((RTIME[1] >> 4)&0x0F)|0x30);
+ 245   1              DisplayOneChar(10,1,(RTIME[1]&0x0f)|0x30);
+ 246   1              
+ 247   1              DisplayOneChar(11,1,':');
+ 248   1              DisplayOneChar(12,1,((RTIME[0] >> 4)&0x0F)|0x30);
+ 249   1              DisplayOneChar(13,1,(RTIME[0]&0x0f)|0x30);
+ 250   1              
+ 251   1      }
+ 252          
+ 253          void main()
+ 254          {       
+ 255   1              bit show = 1;
+ 256   1              char i = 0;
+ 257   1              init();
+ 258   1              while(1)
+ 259   1              {
+ 260   2                      isopened();
+ 261   2                      if(isempty())
+ 262   2                      {
+ 263   3                              LcdClearScreen();
+ 264   3                              LcdShowStr(0,1,"NO stored food!");
+ 265   3                              VeryLongTimeDelay();
+ 266   3                              LcdClearScreen();
+ 267   3                      }
+ 268   2                      CmdPro();
+ 269   2                      Keypro();
+ 270   2                      LcdClearScreen();
+ 271   2                      if(!isauto)
+ 272   2                      {
+ 273   3                              if(isfeed()) feed();
+ 274   3                              if (key == 0xB0)
+ 275   3                              {
+ 276   4                                      show = ~show;
+ 277   4                                      key = 0;
+ 278   4                                      if (now_feed_time > feed_times) i = 0;
+ 279   4                                      else i = now_feed_time;
+ 280   4                              }
+ 281   3                              if (key == 0xD0)
+ 282   3                              {
+ 283   4                                      i ++;
+ 284   4                                      if (i >= feed_times) i = 0;
+ 285   4                                      key = 0;
+ 286   4                              }
+ 287   3                              if (key == 0xE0)
+ 288   3                              {
+ 289   4                                      i --;
+ 290   4                                      if (i < 0) i = feed_times-1;
+ 291   4                                      key = 0;
+ 292   4                              }
+ 293   3                                      
+ 294   3                              if (show == 1)
+ 295   3                              {
+ 296   4                                      LcdShowStr(15,0,"A");
+ 297   4                                      ShowTime();
+ 298   4                              }
+ 299   3                              else
+ 300   3                              {
+ 301   4                                      LcdShowStr(0,0,"Feed Plan:");
+ 302   4                                      LcdShowStr(0,1,"Time:");
+ 303   4                                      DisplayOneChar(5,1,((feed_time[i] >> 4)&0x0f)|0x30);
+C51 COMPILER V9.01   MAIN                                                                  12/20/2019 15:03:52 PAGE 6   
+
+ 304   4                                      DisplayOneChar(6,1,(feed_time[i]&0x0f)|0x30);
+ 305   4                                      LcdShowStr(8,1,"WT:");
+ 306   4                                      LcdShowStr(11,1,num8tochar(feed_weigth[i]));
+ 307   4                                      LcdShowStr(14,1,"0g");
+ 308   4                              }
+ 309   3                      }
+ 310   2                      else
+ 311   2                      {
+ 312   3                              isfeed();
+ 313   3                              if (key == 0xB0)
+ 314   3                              {
+ 315   4                                      feed();
+ 316   4                                      key = 0;
+ 317   4                              }
+ 318   3                              if (key == 0xD0)
+ 319   3                              {
+ 320   4                                      LcdShowStr(0,1,"manual open");
+ 321   4                                      serial_print("MOPEN\n");
+ 322   4                                      isSendFull = 1;
+ 323   4                                      open();
+ 324   4                                      LcdClearScreen();
+ 325   4                                      key = 0;
+ 326   4                              }
+ 327   3                              if (key == 0xE0)
+ 328   3                              {
+ 329   4                                      LcdShowStr(0,1,"manual close");
+ 330   4                                      serial_print("MCLOSE\n");
+ 331   4                                      isSendFull = 1;
+ 332   4                                      close();
+ 333   4                                      LcdClearScreen();
+ 334   4                                      key = 0;
+ 335   4                              }
+ 336   3                              LcdShowStr(15,0,"M");
+ 337   3                              _nop_();
+ 338   3                              ShowTime();
+ 339   3                      }
+ 340   2                      isenough();     
+ 341   2              }
+ 342   1      }
+ 343          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1121    ----
+   CONSTANT SIZE    =    245    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     23       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
