@@ -1,0 +1,94 @@
+LIBRARY IEEE;                      
+USE IEEE.STD_LOGIC_1164.ALL; 
+USE IEEE.STD_LOGIC_Arith.ALL;
+USE IEEE.STD_LOGIC_Unsigned.ALL;
+
+ENTITY moto_test IS
+PORT(
+clock_48M:		IN 	STD_LOGIC;	--系统时钟(48MHz)
+key:		IN 	STD_LOGIC_VECTOR(2 DOWNTO 0);--按键输入(key1~key3)
+pwm_in:		IN  STD_LOGIC;		--产生的PWM波输入
+pwm_en:		OUT STD_LOGIC;		--PWM控制使能端
+duty_cycle:	OUT	STD_LOGIC_VECTOR(3 DOWNTO 0);--PWM占空比控制输出
+motoa,motob:OUT STD_LOGIC;		--PWM波输出
+led:		OUT STD_LOGIC_VECTOR(4 DOWNTO 0)
+);
+END;
+
+ARCHITECTURE one OF moto_test IS
+SIGNAL duty_cycle_io:	STD_LOGIC_VECTOR(3 DOWNTO 0);
+SIGNAL pwm_en_io:		STD_LOGIC;
+SIGNAL count:			STD_LOGIC_VECTOR(16 DOWNTO 0);--时钟分频计数器
+SIGNAL dout1,dout2,dout3:STD_LOGIC_VECTOR(2 DOWNTO 0);--消抖寄存器
+SIGNAL moto_dir:		STD_LOGIC;--电机正反转
+SIGNAL k_debounce:		STD_LOGIC_VECTOR(2  DOWNTO 0);--按键消抖输出
+SIGNAL clk:				STD_LOGIC;--分频时钟
+SIGNAL key_edge:		STD_LOGIC_VECTOR(2  DOWNTO 0);
+
+BEGIN
+led<=NOT (pwm_en_io & duty_cycle_io);--LED输出状态指示
+pwm_en <= pwm_en_io;
+duty_cycle <= duty_cycle_io;
+
+PROCESS(clock_48M)
+BEGIN
+	IF RISING_EDGE(clock_48m) THEN
+		IF count<120000 THEN	
+			count<=count+1;
+			clk<='0';
+		ELSE
+			count<=B"0_0000_0000_0000_0000";
+			clk<='1';
+		END IF;
+	END IF;
+END PROCESS;
+	-------------------------------------------<<按键消抖部分
+PROCESS (clock_48m)
+BEGIN
+	IF RISING_EDGE(clock_48M) THEN
+		IF clk='1' THEN
+			dout1<=key;
+			dout2<=dout1;
+			dout3<=dout2;
+		END IF;
+	END IF;
+END PROCESS;
+
+PROCESS (clock_48M)
+BEGIN
+	IF RISING_EDGE(clock_48M) THEN
+		k_debounce<=dout1 OR dout2 OR dout3;--按键消抖输出.
+	END IF;
+END PROCESS;
+key_edge<=NOT (dout1 OR dout2 OR dout3) AND k_debounce;
+
+PROCESS(clock_48M)--按键1 控制电动机速度
+BEGIN
+	IF RISING_EDGE(clock_48M) THEN
+		IF key_edge(0)='1' THEN
+			duty_cycle_io<=duty_cycle_io+1;
+		END IF;
+	END IF;
+END PROCESS;
+
+PROCESS(clock_48M)--按键2，控制电动机启动、停止 
+BEGIN
+	IF RISING_EDGE(clock_48M) THEN
+		IF key_edge(1)='1' THEN
+			pwm_en_io<=NOT pwm_en_io;
+		END IF;
+	END IF;
+END PROCESS;
+
+PROCESS(clock_48M)--按键3，控制电动机正/反转
+BEGIN
+	IF RISING_EDGE(clock_48M) THEN
+		IF key_edge(2)='1' THEN
+			moto_dir <=NOT moto_dir;
+		END IF;
+	END IF;
+END PROCESS;
+motoa<=pwm_in WHEN moto_dir='1' ELSE '0';
+motob<='0' WHEN moto_dir='1' ELSE pwm_in;
+
+END;
