@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="pi">
+    <file>con.png</file>
+    <file>bg.jpg</file>
+    <file>background1.jpg</file>
+  </qresource>
+</RCC>
